@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="1024"
+    android:viewportHeight="1024">
+    <group
+        android:name="content"
+        android:pivotX="512"
+        android:pivotY="512"
+        android:scaleX="0.9"
+        android:scaleY="0.9">
+
+        <!-- lens outer ring -->
+        <path android:pathData="M242,560 a230,230 0 1,0 460,0 a230,230 0 1,0 -460,0">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:type="linear"
+                    android:startX="242"
+                    android:startY="330"
+                    android:endX="702"
+                    android:endY="790"
+                    android:startColor="#4B5563"
+                    android:endColor="#2A2E37" />
+            </aapt:attr>
+        </path>
+
+        <!-- lens glass -->
+        <path android:pathData="M276,560 a196,196 0 1,0 392,0 a196,196 0 1,0 -392,0">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:type="radial"
+                    android:centerX="426"
+                    android:centerY="491"
+                    android:gradientRadius="322"
+                    android:startColor="#3A4048"
+                    android:endColor="#181B21" />
+            </aapt:attr>
+        </path>
+
+        <!-- lens reflection arc -->
+        <path
+            android:pathData="M 340 460 A 200 200 0 0 1 560 400"
+            android:strokeColor="#5B6472"
+            android:strokeWidth="14"
+            android:strokeLineCap="round"
+            android:strokeAlpha="0.5"
+            android:fillColor="#00000000" />
+
+        <!-- lens aperture -->
+        <path
+            android:pathData="M352,560 a120,120 0 1,0 240,0 a120,120 0 1,0 -240,0"
+            android:fillColor="#101317"
+            android:fillAlpha="0.9" />
+        <path
+            android:pathData="M392,560 a80,80 0 1,0 160,0 a80,80 0 1,0 -160,0"
+            android:fillColor="#0B0D10" />
+
+        <!-- translucent overlay pane -->
+        <group
+            android:name="pane"
+            android:pivotX="640"
+            android:pivotY="400"
+            android:rotation="-8">
+            <path android:pathData="M506,240 h268 a36,36 0 0 1 36,36 v268 a36,36 0 0 1 -36,36 h-268 a36,36 0 0 1 -36,-36 v-268 a36,36 0 0 1 36,-36 z">
+                <aapt:attr name="android:fillColor">
+                    <gradient
+                        android:type="linear"
+                        android:startX="470"
+                        android:startY="240"
+                        android:endX="810"
+                        android:endY="580"
+                        android:startColor="#D97EF3DE"
+                        android:endColor="#8C4FD8C4" />
+                </aapt:attr>
+            </path>
+            <path
+                android:pathData="M506,240 h268 a36,36 0 0 1 36,36 v268 a36,36 0 0 1 -36,36 h-268 a36,36 0 0 1 -36,-36 v-268 a36,36 0 0 1 36,-36 z"
+                android:fillColor="#00000000"
+                android:strokeColor="#EFFFFC"
+                android:strokeWidth="4"
+                android:strokeAlpha="0.6" />
+            <path
+                android:pathData="M 520 340 Q 600 300 680 350 T 760 400"
+                android:fillColor="#00000000"
+                android:strokeColor="#0F2A26"
+                android:strokeWidth="10"
+                android:strokeLineCap="round"
+                android:strokeAlpha="0.55" />
+            <path
+                android:pathData="M 540 460 Q 610 500 700 470"
+                android:fillColor="#00000000"
+                android:strokeColor="#0F2A26"
+                android:strokeWidth="10"
+                android:strokeLineCap="round"
+                android:strokeAlpha="0.4" />
+        </group>
+    </group>
+</vector>
