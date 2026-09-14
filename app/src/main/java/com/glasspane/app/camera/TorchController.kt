@@ -91,14 +91,17 @@ class TorchController(
             .setCaptureRequestOption(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH)
             .setCaptureRequestOption(CaptureRequest.FLASH_STRENGTH_LEVEL, level)
             .build()
-        camera2Control.setCaptureRequestOptions(options)
+        camera2Control.addCaptureRequestOptions(options)
     }
 
     /** Turns the torch fully off, clearing any Camera2 strength override. */
     fun turnOff() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val camera2Control = Camera2CameraControl.from(camera.cameraControl)
-            camera2Control.setCaptureRequestOptions(CaptureRequestOptions.Builder().build())
+            val options = CaptureRequestOptions.Builder()
+                .setCaptureRequestOption(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF)
+                .build()
+            camera2Control.addCaptureRequestOptions(options)
         }
         camera.cameraControl.enableTorch(false)
     }

@@ -4,7 +4,7 @@ Minimal Android camera app built with CameraX and Jetpack Compose.
 
 ## Features
 
-- Live camera preview with torch control
+- Live camera preview with torch control and manual focus
 - Photo and video capture
 - Grid overlay and adjustable overlay layers
 - Lens selection where the device supports multiple cameras

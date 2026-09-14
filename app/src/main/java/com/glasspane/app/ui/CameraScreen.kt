@@ -6,6 +6,8 @@ import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ZoomState
 import androidx.camera.video.Quality
+import com.glasspane.app.camera.FocusCapability
+import com.glasspane.app.camera.FocusController
 import androidx.camera.video.VideoRecordEvent
 import androidx.camera.view.PreviewView
 import androidx.compose.animation.AnimatedVisibility
@@ -33,6 +35,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BlurOn
 import androidx.compose.material.icons.filled.Cameraswitch
 import androidx.compose.material.icons.filled.GridOn
+import androidx.compose.material.icons.filled.CenterFocusStrong
+import androidx.compose.material.icons.filled.CenterFocusWeak
 import androidx.compose.material.icons.filled.Layers
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Tune
@@ -128,6 +132,10 @@ fun CameraScreen() {
     var minZoomRatio by remember { mutableFloatStateOf(1f) }
     var maxZoomRatio by remember { mutableFloatStateOf(1f) }
     var linearZoom by remember { mutableFloatStateOf(0f) }
+    var focusController by remember { mutableStateOf<FocusController?>(null) }
+    var focusCapability by remember { mutableStateOf(FocusCapability(supportsManualFocus = false, minimumFocusDistance = 0f)) }
+    var manualFocusEnabled by remember { mutableStateOf(false) }
+    var focusDistance by remember { mutableFloatStateOf(0f) }
 
     var cameraControlsExpanded by remember { mutableStateOf(false) }
     var displayOptionsExpanded by remember { mutableStateOf(false) }
@@ -154,6 +162,11 @@ fun CameraScreen() {
         val controller = TorchController(context, camera)
         torchController = controller
         torchCapability = controller.queryCapability()
+        val focus = FocusController(camera)
+        focusController = focus
+        focusCapability = focus.queryCapability()
+        manualFocusEnabled = false
+        focusDistance = 0f
         controller.registerTorchCallback { isOn, level ->
             torchOn = isOn
             if (level > 0) torchStrength = level
@@ -318,6 +331,45 @@ fun CameraScreen() {
                                 valueRange = 0f..1f,
                                 modifier = Modifier.width(200.dp)
                             )
+                        }
+                        // 4: manual focus toggle + slider
+                        AnimatedVisibility(visible = focusCapability.supportsManualFocus) {
+                            Column(modifier = Modifier.padding(top = 8.dp)) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.clickable {
+                                        manualFocusEnabled = !manualFocusEnabled
+                                        if (manualFocusEnabled) {
+                                            focusDistance = focusCapability.minimumFocusDistance / 2f
+                                            focusController?.setManualFocus(focusDistance)
+                                        } else {
+                                            focusController?.setAutoFocus()
+                                        }
+                                        effectiveHaptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    }
+                                ) {
+                                    Text(text = "Manual focus", color = Color.White, modifier = Modifier.padding(end = 8.dp))
+                                    Icon(
+                                        imageVector = if (manualFocusEnabled) Icons.Filled.CenterFocusStrong else Icons.Filled.CenterFocusWeak,
+                                        contentDescription = "Toggle manual focus",
+                                        tint = if (manualFocusEnabled) MaterialTheme.colorScheme.primary else Color.White
+                                    )
+                                }
+                                AnimatedVisibility(visible = manualFocusEnabled) {
+                                    Column(modifier = Modifier.padding(top = 8.dp)) {
+                                        Text(text = "%.2f".format(focusDistance), color = Color.White)
+                                        Slider(
+                                            value = focusDistance,
+                                            onValueChange = { value ->
+                                                focusDistance = value
+                                                focusController?.setManualFocus(value)
+                                            },
+                                            valueRange = 0f..focusCapability.minimumFocusDistance,
+                                            modifier = Modifier.width(200.dp)
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                 }
